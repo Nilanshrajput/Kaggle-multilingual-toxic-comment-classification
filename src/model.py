@@ -1,6 +1,7 @@
 import config
 import transformers
 import torch.nn as nn
+import torch
 
 
 class BERTBaseUncased(nn.Module):
@@ -17,8 +18,8 @@ class BERTBaseUncased(nn.Module):
             token_type_ids=token_type_ids
         )
 
-        mean_pool = torch.mean_pool(o1,1)
-        max_pool = torch.max(o1,1)
+        mean_pool = torch.mean(o1,1)
+        max_pool,_ = torch.max(o1,1)
         cat = torch.cat((mean_pool, max_pool),1)
 
         bo = self.bert_drop(cat)
